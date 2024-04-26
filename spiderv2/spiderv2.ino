@@ -99,8 +99,8 @@ void walk(int speed){
 }
 
 void walk2(int speed){
-  lay();
-  stand();
+  lay(speed);
+  stand(speed);
 }
 
 void setup() {
