@@ -25,10 +25,12 @@ const int limit[8][2] =  { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 },
                            { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }};
 
 void init_motor() {
+  int init[8] = {(limit[0][0]+limit[0][1])/2,  (limit[1][0]+limit[1][1])/2,  (limit[2][0]+limit[2][1])/2,  (limit[3][0]+limit[3][1])/2,
+                 (limit[4][0]+limit[4][1])/2,  (limit[5][0]+limit[5][1])/2,  (limit[6][0]+limit[6][1])/2,  (limit[7][0]+limit[7][1])/2 };
   for (int i = 0; i < 8; i += 1) {
     motor[i].attach(i + 4);
   }
-  move_arr()
+  move_arr(init, speed);
 }
 
 void read_motor() {
@@ -103,11 +105,6 @@ void walk2(int speed){
   stand(speed);
 }
 
-void setup() {
-  Serial.begin(9600);
-  init_motor();
-}
-
 char receive() {
   if (Serial.available()) {
     char temp = Serial.read();
@@ -116,6 +113,10 @@ char receive() {
   }
 }
 
+void setup() {
+  Serial.begin(9600);
+  init_motor();
+}
 void loop() {
   char received = receive();
   switch(received){
