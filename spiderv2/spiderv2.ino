@@ -25,7 +25,7 @@ motor[0].read(),  motor[1].read(),  motor[2].read(),  motor[3].read(),  motor[4]
 
 Servo motor[8];
 
-const int speed = 10000;
+const int speed = 500;
 
 // limit[위치][모드] = {{앞쪽/서는방향한계, 뒤쪽/눕는방향한계}...}
 // 측정필요
@@ -159,25 +159,24 @@ void setup() {
 }
 void loop() {
   
-  char received = receive();
-  switch(received){
-    case 'w':
-      walk(speed);
-      break;
-    case 'e':
-      walk2(speed);
-      break;
-    case 't':
-      motor_test(5);
-      break;
-    case 'i':
-      init_position(speed);
-      break;
-    case 'a':
-      walk3(speed);
-      walk3(speed);
-      break;
-  }
-  
-  
+  walk3(speed);
+  walk3(speed);
+  walk3(speed);
+  walk3(speed);
+  walk3(speed);
+  walk3(speed);
+  walk3(speed);
+  walk3(speed);
+  walk3(speed);
+  walk3(speed);
+
+  lay(speed);
+  stand(speed);
+  lay(speed);
+  stand(speed);
+
+  walk(speed);
+  walk(speed);
+  walk(speed);
+  walk(speed);
 }
