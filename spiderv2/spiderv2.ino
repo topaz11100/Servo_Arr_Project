@@ -25,7 +25,7 @@ motor[0].read(),  motor[1].read(),  motor[2].read(),  motor[3].read(),  motor[4]
 
 Servo motor[8];
 
-const int speed = 250;
+const int speed = 10000;
 
 // limit[위치][모드] = {{앞쪽/서는방향한계, 뒤쪽/눕는방향한계}...}
 // 측정필요
