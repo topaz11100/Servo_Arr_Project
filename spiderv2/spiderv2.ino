@@ -21,8 +21,8 @@ const int speed = 1;
 
 // limit[위치][모드] = {{앞쪽/서는방향한계, 뒤쪽/눕는방향한계}...}
 // 측정필요
-const int limit[8][2] =  { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, 
-                           { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }};
+const int limit[8][2] =  { { 0, 170 }, { 10, 170 }, { 170, 10 }, { 170, 10 }, 
+                           { 130, 30 }, { 45, 130 }, { 130, 30 }, { 45, 130 }};
 
 void init_motor() {
   int init[8] = {(limit[0][0]+limit[0][1])/2,  (limit[1][0]+limit[1][1])/2,  (limit[2][0]+limit[2][1])/2,  (limit[3][0]+limit[3][1])/2,
@@ -41,13 +41,13 @@ void read_motor() {
 }
 
 void lay(int speed) {
-  int temp[8] = { 0, 0, 0, 0,
+  int temp[8] = { motor[0].read(), motor[1].read(), motor[2].read(), motor[3].read(),
                   limit[4][1], limit[5][1], limit[6][1], limit[7][1] };
   move_arr(temp, speed);
 }
 
 void stand(int speed) {
-  int temp[8] = { 0, 0, 0, 0,
+  int temp[8] = { motor[0].read(), motor[1].read(), motor[2].read(), motor[3].read(),
                   limit[4][0], limit[5][0], limit[6][0], limit[7][0] };
   move_arr(temp, speed);
 }
@@ -108,9 +108,16 @@ void walk2(int speed){
 char receive() {
   if (Serial.available()) {
     char temp = Serial.read();
-    Serial.println("Received char : " + temp);
+    Serial.println("Received char : " + String(temp));
     return temp;
   }
+}
+
+void motor_test(int num){
+  motor[num].write(30);
+  delay(1000);
+  motor[num].write(130);
+  delay(5000);
 }
 
 void setup() {
@@ -118,6 +125,7 @@ void setup() {
   init_motor();
 }
 void loop() {
+  
   char received = receive();
   switch(received){
     case 'w':
@@ -126,6 +134,13 @@ void loop() {
     case 'e':
       walk2(speed);
       break;
+    case 't':
+      motor_test(5);
+      break;
+    case 'i':
+      init_motor();
+      break;
   }
   read_motor();
+  
 }
