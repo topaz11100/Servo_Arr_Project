@@ -10,7 +10,7 @@ Servo servo4_k;
 Servo servo4_f;
 
 //속도 조절
-int speed=100;
+int speed=200;
 
 void setup(){
   
@@ -38,13 +38,27 @@ void loop(){
   뒤로 걷도록 하면 회전 방향이 바뀔 것이다
   예제2 walk_one_leg를 변형해 뒤로 가게 보이는 back_one_leg함수를 만든 뒤 회전 결과가 반대인지 관찰한다
   */
-  back_one_leg_1(speed);
-  back_one_leg_3(speed);
-  walk_one_leg_2(speed);
-  walk_one_leg_4(speed);
+
+  /*
+  예제3 walk_one_leg와 back_one_leg를 적절히 활용해 시계방향으로 회전해보자
+  clock_rotate 함수 내용을 완성하자
+  clock_rotate(speed);
+  */
+
+  /*
+  예제4 반시계방향으로 회전해보자
+  anticlock_rotate 함수 내용을 완성하자
+  anticlock_rotate(speed);
+  */
+
+  /*
+  예제5 걸을때처럼 두 다리를 동시에 움직여 좀더 나은 회전을 해보자
+  advanced_clock_rotate(speed);
+  advanced_anticlock_rotate(speed);
+  */
   
 }
-//예제1 
+//예제1
 void walk_one_leg_1(int speed){
   
   servo1_f.write(30);
@@ -66,11 +80,10 @@ void back_one_leg_1(int speed){
   delay(speed);
   servo1_f.write(140);
   delay(speed);
-  servo1_k.write(140);
+  servo1_k.write(0);
   delay(speed);
   
 }
-
 void walk_one_leg_2(int speed){
   
   servo2_f.write(130);
@@ -95,7 +108,6 @@ void back_one_leg_2(int speed){
   delay(speed);
   
 }
-
 void walk_one_leg_3(int speed){
   
   servo3_f.write(50);
@@ -116,11 +128,10 @@ void back_one_leg_3(int speed){
   delay(speed);
   servo3_f.write(130);
   delay(speed);
-  servo3_k.write(140);
+  servo3_k.write(170);
   delay(speed);
   
 }
-
 void walk_one_leg_4(int speed){
   
   servo4_f.write(130);
@@ -146,6 +157,31 @@ void back_one_leg_4(int speed){
   
 }
 
+//예제3
+void clock_rotate(int speed){
+  /*
+  walk_one_leg_1(speed);
+  walk_one_leg_2(speed);
+  back_one_leg_3(speed);
+  back_one_leg_4(speed);
+  */
+}
+//예제4
+void anticlock_rotate(int speed){
+  /*
+  walk_one_leg_3(speed);
+  walk_one_leg_4(speed);
+  back_one_leg_1(speed);
+  back_one_leg_2(speed);
+  */
+}
+//예제5
+void advanced_clock_rotate(speed){
+
+}
+void advanced_anticlock_rotate(speed){
+  
+}
 
 
 
