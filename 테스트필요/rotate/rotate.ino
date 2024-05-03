@@ -60,7 +60,7 @@ void loop(){
 }
 //예제1
 void walk_one_leg_1(int speed){
-  
+  /*
   servo1_f.write(30);
   delay(speed);
   servo1_k.write(0);
@@ -69,11 +69,11 @@ void walk_one_leg_1(int speed){
   delay(speed);
   servo1_k.write(90);
   delay(speed);
-  
+  */
 }
 //예제2
 void back_one_leg_1(int speed){
-  
+  /*
   servo1_f.write(30);
   delay(speed);
   servo1_k.write(90);
@@ -82,10 +82,10 @@ void back_one_leg_1(int speed){
   delay(speed);
   servo1_k.write(0);
   delay(speed);
-  
+  */
 }
 void walk_one_leg_2(int speed){
-  
+  /*
   servo2_f.write(130);
   delay(speed);
   servo2_k.write(10);
@@ -94,10 +94,10 @@ void walk_one_leg_2(int speed){
   delay(speed);
   servo2_k.write(90);
   delay(speed);
-  
+  */
 }
 void back_one_leg_2(int speed){
-  
+  /*
   servo2_f.write(130);
   delay(speed);
   servo2_k.write(90);
@@ -106,10 +106,10 @@ void back_one_leg_2(int speed){
   delay(speed);
   servo2_k.write(10);
   delay(speed);
-  
+  */
 }
 void walk_one_leg_3(int speed){
-  
+  /*
   servo3_f.write(50);
   delay(speed);
   servo3_k.write(170);
@@ -118,10 +118,10 @@ void walk_one_leg_3(int speed){
   delay(speed);
   servo3_k.write(90);
   delay(speed);
-  
+  */
 }
 void back_one_leg_3(int speed){
-  
+  /*
   servo3_f.write(50);
   delay(speed);
   servo3_k.write(90);
@@ -130,10 +130,10 @@ void back_one_leg_3(int speed){
   delay(speed);
   servo3_k.write(170);
   delay(speed);
-  
+  */
 }
 void walk_one_leg_4(int speed){
-  
+  /*
   servo4_f.write(130);
   delay(speed);
   servo4_k.write(170);
@@ -142,10 +142,10 @@ void walk_one_leg_4(int speed){
   delay(speed);
   servo4_k.write(90);
   delay(speed);
-  
+  */
 }
 void back_one_leg_4(int speed){
-  
+  /*
   servo4_f.write(130);
   delay(speed);
   servo4_k.write(90);
@@ -154,7 +154,7 @@ void back_one_leg_4(int speed){
   delay(speed);
   servo4_k.write(170);
   delay(speed);
-  
+  */
 }
 
 //예제3
@@ -175,16 +175,121 @@ void anticlock_rotate(int speed){
   back_one_leg_2(speed);
   */
 }
-//예제5
+//예제5(적용테스트 필요)
 void advanced_clock_rotate(speed){
-
+  /*
+  clock_rotate_1_3(speed);
+  clock_rotate_2_4(speed);
+  */
 }
+
 void advanced_anticlock_rotate(speed){
-  
+  /*
+  anticlock_rotate_1_3(speed);
+  anticlock_rotate_2_4(speed);
+  */
 }
 
+void clock_rotate_1_3(int speed){
+  /*
+  servo1_f.write(30);
+  delay(speed);
+  servo1_k.write(0);
+  delay(speed);
+  servo3_f.write(50);
+  delay(speed);
+  servo3_k.write(90);
+  delay(speed);
 
+  servo2_f.write(90);
+  servo4_f.write(90);
 
+  servo1_f.write(140);
+  delay(speed);
+  servo1_k.write(90);
+  delay(speed);
+  servo3_f.write(130);
+  delay(speed);
+  servo3_k.write(170);
+  delay(speed);
+  */
+}
+
+void anticlock_rotate_1_3(int speed){
+  /*
+  servo1_f.write(30);
+  delay(speed);
+  servo1_k.write(90);
+  delay(speed);
+  servo3_f.write(50);
+  delay(speed);
+  servo3_k.write(170);
+  delay(speed);
+
+  servo2_f.write(90);
+  servo4_f.write(90);
+
+  servo1_f.write(140);
+  delay(speed);
+  servo1_k.write(0);
+  delay(speed);
+  servo3_f.write(130);
+  delay(speed);
+  servo3_k.write(90);
+  delay(speed);
+  */
+}
+
+void clock_rotate_2_4(int speed){
+  /*
+  servo2_f.write(130);
+  delay(speed);
+  servo2_k.write(10);
+  delay(speed);
+  servo4_f.write(130);
+  delay(speed);
+  servo4_k.write(90);
+  delay(speed);
+
+  servo2_f.write(90);
+  servo4_f.write(90);
+
+  servo2_f.write(55);
+  delay(speed);
+  servo2_k.write(90);
+  delay(speed);
+  servo4_f.write(45);
+  delay(speed);
+  servo4_k.write(170);
+  delay(speed);
+  */
+}
+void anticlock_rotate_2_4(int speed){
+  /*
+  servo2_f.write(130);
+  delay(speed);
+  servo2_k.write(90);
+  delay(speed);
+  servo4_f.write(130);
+  delay(speed);
+  servo4_k.write(170);
+  delay(speed);
+
+  servo2_f.write(90);
+  servo4_f.write(90);
+
+  servo2_f.write(55);
+  delay(speed);
+  servo2_k.write(10);
+  delay(speed);
+  servo4_f.write(45);
+  delay(speed);
+  servo4_k.write(90);
+  delay(speed);
+  */
+}
+
+//추가예제 자신만의 방법으로 로봇을 회전시켜보자
 
 
 

@@ -53,7 +53,7 @@ void loop(){
   그리고 대각선 방향의 다리를 동시에 움직이면 더 잘걸을 수 있음이 알려져있다.
   예제4 문제점들을 해결하고 더 잘 걷게 해보자
   */
-  //walk2(speed);
+  //advanced_walk(speed);
 }
 //예제3
 void walk(int speed){
@@ -115,7 +115,7 @@ void walk_one_leg_4(int speed){
 }
 
 //예제4
-void walk2(int speed){
+void advanced_walk(int speed){
   /*
   walk_1_3(speed);
   walk_2_4(speed);
