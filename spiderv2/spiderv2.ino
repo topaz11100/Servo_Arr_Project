@@ -101,7 +101,7 @@ void move_angle(int num, int angle, int speed) {
   }
 }
 
-void walk(int speed){
+void swim(int speed){
   int forward[8] = {limit[0][0],limit[1][0],limit[2][0],limit[3][0],
                     limit[4][0],limit[5][0],limit[6][0],limit[7][0]};
   int back[8]    = {limit[0][1],limit[1][1],limit[2][1],limit[3][1],
@@ -114,12 +114,12 @@ void walk(int speed){
   init_position(speed);
 }
 
-void walk2(int speed){
+void squat(int speed){
   lay(speed);
   stand(speed);
 }
 
-void walk3(int speed){
+void walk(int speed){
   int posi1[8]={ limit[0][0],  motor[1].read(),  limit[2][0],  motor[3].read(),
                  limit[4][1],  motor[5].read(),  limit[6][1], motor[7].read() };
   
@@ -158,25 +158,18 @@ void setup() {
   init_motor();
 }
 void loop() {
-  
-  walk3(speed);
-  walk3(speed);
-  walk3(speed);
-  walk3(speed);
-  walk3(speed);
-  walk3(speed);
-  walk3(speed);
-  walk3(speed);
-  walk3(speed);
-  walk3(speed);
-
-  lay(speed);
-  stand(speed);
-  lay(speed);
-  stand(speed);
-
-  walk(speed);
-  walk(speed);
-  walk(speed);
-  walk(speed);
+  switch(receive()){
+    case 'w':
+      walk(speed);
+      break;
+    case 's':
+      swim(speed);
+      break;
+    case 'q':
+      squat(speed);
+      break;
+    case 'i':
+      init_position(speed);
+      break;
+  }
 }
