@@ -28,7 +28,6 @@ void setup(){
   servo4_k.attach(7);
   servo4_f.attach(11);
   */
-  Serial.begin(9600);
 }
 
 void loop(){

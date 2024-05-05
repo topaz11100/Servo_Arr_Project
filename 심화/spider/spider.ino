@@ -14,10 +14,10 @@
 */
 
 /*
+
 memo
 
 motor[0].read(),  motor[1].read(),  motor[2].read(),  motor[3].read(),  motor[4].read(),  motor[5].read(),  motor[6].read(),  motor[7].read()
-
 
 */
 
