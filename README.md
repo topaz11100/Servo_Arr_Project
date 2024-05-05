@@ -1,5 +1,7 @@
 학습 순서
 
+serial
+
 one_servo
 
 many_servo
