@@ -1,13 +1,13 @@
 // 초음파 센서로 거리재기
 
 //핀 번호 지정
-int trig = 6;
-int echo = 7;
+int trig = 12;
+int echo = 13;
  
 void setup(){
   Serial.begin(9600);       // 시리얼 속도 설정
   pinMode(echo, INPUT);   // echoPin 입력    
-  pinMode(trig, OUTPUT);  // trigPin 출력    
+  pinMode(trig, OUTPUT);  // trigPin 출력                                                                                                                                                       
 }
  
 void loop(){

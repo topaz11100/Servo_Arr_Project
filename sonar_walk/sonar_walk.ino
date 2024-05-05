@@ -1,7 +1,7 @@
-
+#include <Servo.h>
 //센서 핀 번호 지정
-int trig = 6;
-int echo = 7;
+int trig = 12;
+int echo = 13;
 
 //포탑 돌릴 모터
 Servo turret;
@@ -17,12 +17,21 @@ Servo servo4_k;
 Servo servo4_f;
 
 //속도
-int speed = 100;
+int speed = 200;
  
 void setup(){
   Serial.begin(9600);       // 시리얼 속도 설정
   pinMode(echo, INPUT);   // echoPin 입력    
-  pinMode(trig, OUTPUT);  // trigPin 출력    
+  pinMode(trig, OUTPUT);  // trigPin 출력
+  servo1_k.attach(4);
+  servo1_f.attach(8);
+  servo2_k.attach(5);
+  servo2_f.attach(9);
+  servo3_k.attach(6);
+  servo3_f.attach(10);
+  servo4_k.attach(7);
+  servo4_f.attach(11);
+  turret.attach(3);
 }
  
 void loop(){
@@ -40,45 +49,40 @@ void loop(){
   일 것이다 위를 차례로 구현해보자
   */
 
-  /*1번
-  advanced_walk(speed);
-  */
+  //1번
+  //advanced_walk(speed);
+  
 
-  /*2번
-  float dis = distance();
-  */
+  //2번
+  //float dis = distance();
+  
+  
 
   /*
   3번 2번 값을 유심히 본 뒤, 장애물 판단기준을 정하자
-  if(dis < 10){
+  
+  if(dis < 100){
     //예제1 위의 3.1을 구현해보자 detect함수로 구현하며, 잰 거리의 최대값을 반환하자 함수안 예제도 확인해보자
-    float mark = detect(speed);
+    float mark = detect();
 
     //4,5번
     //예제2 나머지를 구현하자 escape함수로 구현하자
-    //escape(dis, speed);
+    escape(mark, speed);
   }
   */
 }
 
 //예제1
-float detect(int speed){
+float detect(){
   /*
   float result = 0;
   int angle = 0;
-  for(int i=90; i<=180; i+=1){
+  float temp;
+  for(int i=0; i<=180; i+=1){
     turret.write(i);
-    float dis = distance();
-    if(result<dis){
-      result = dis;
-      angle = i;
-    }
-  }
-  for(int i=180; i>=0; i-=1){
-    turret.write(i);
-    float dis = distance();
-    if(result<dis){
-      result = dis;
+    temp = distance();
+    if(result < temp){ //먼 쪽으로 피함
+      result = temp;
       angle = i;
     }
   }
@@ -89,23 +93,29 @@ float detect(int speed){
 }
 
 //예제2
-float escape(float dis, int speed){
+void escape(float dis, int speed){
   /*
-  //바라보고있는쪽이 90이상이면 시계, 아니면 반시계
-  if(turret.read()>90){
-    //센서오차감안, 범위안에들어오도록 비교
-    while(!(dis-1<distsnce() && distsnce()<dis+1)){
+  //바라보고있는쪽이 90이상이면 반시계, 아니면 시계 방향 회전
+  bool anticlock = turret.read()>90;
+  turret.write(90);
+  float temp = distance();
+  if(anticlock){
+    //센서 오차 감안, 범위 안에 들어오도록 회전
+    while(!(dis-10<temp)){
       advanced_anticlock_rotate(speed);
+      temp = distance();
     }
   }
   else{
-    while(!(dis-1<distsnce() && distsnce()<dis+1)){
+    while(!(dis-10<temp)){
       advanced_clock_rotate(speed);
+      temp = distance();
     }
   }
   */
 }
 
+//초음파 거리
 float distance(){
   
   float result;
@@ -114,11 +124,14 @@ float distance(){
   delayMicroseconds(10);
   digitalWrite(trig, LOW);
   duration = pulseIn(echo, HIGH);
-  dis = ((float)(340 * duration) / 1000) / 2;
-  return dis;
+  result = ((float)(340 * duration) / 1000) / 2;
+  Serial.println("distance : " + String(result));
+  return result;
   
 } 
 
+
+//걷기
 void advanced_walk(int speed){
   
   walk_1_3(speed);
@@ -174,15 +187,15 @@ void walk_2_4(int speed){
   
 }
 
-
-void advanced_clock_rotate(speed){
+//회전부
+void advanced_clock_rotate(int speed){
   
   clock_rotate_1_3(speed);
   clock_rotate_2_4(speed);
   
 }
 
-void advanced_anticlock_rotate(speed){
+void advanced_anticlock_rotate(int speed){
   
   anticlock_rotate_1_3(speed);
   anticlock_rotate_2_4(speed);
@@ -197,7 +210,7 @@ void clock_rotate_1_3(int speed){
   delay(speed);
   servo3_f.write(50);
   delay(speed);
-  servo3_k.write(90);
+  servo3_k.write(10);
   delay(speed);
 
   servo2_f.write(90);
@@ -209,7 +222,7 @@ void clock_rotate_1_3(int speed){
   delay(speed);
   servo3_f.write(130);
   delay(speed);
-  servo3_k.write(170);
+  servo3_k.write(90);
   delay(speed);
   
 }
@@ -222,7 +235,7 @@ void anticlock_rotate_1_3(int speed){
   delay(speed);
   servo3_f.write(50);
   delay(speed);
-  servo3_k.write(170);
+  servo3_k.write(90);
   delay(speed);
 
   servo2_f.write(90);
@@ -234,7 +247,7 @@ void anticlock_rotate_1_3(int speed){
   delay(speed);
   servo3_f.write(130);
   delay(speed);
-  servo3_k.write(90);
+  servo3_k.write(10);
   delay(speed);
   
 }
@@ -250,8 +263,8 @@ void clock_rotate_2_4(int speed){
   servo4_k.write(90);
   delay(speed);
 
-  servo2_f.write(90);
-  servo4_f.write(90);
+  servo1_f.write(90);
+  servo3_f.write(90);
 
   servo2_f.write(55);
   delay(speed);
@@ -267,19 +280,19 @@ void anticlock_rotate_2_4(int speed){
   
   servo2_f.write(130);
   delay(speed);
-  servo2_k.write(90);
+  servo2_k.write(170);
   delay(speed);
   servo4_f.write(130);
   delay(speed);
   servo4_k.write(170);
   delay(speed);
 
-  servo2_f.write(90);
-  servo4_f.write(90);
+  servo1_f.write(90);
+  servo3_f.write(90);
 
   servo2_f.write(55);
   delay(speed);
-  servo2_k.write(10);
+  servo2_k.write(90);
   delay(speed);
   servo4_f.write(45);
   delay(speed);
