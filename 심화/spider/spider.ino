@@ -146,6 +146,18 @@ void walk(int speed){
   init_position(speed);
 }
 
+void clock(int speed){
+  int posi1[8]={ limit[0][0],  motor[1].read(),  limit[2][0], motor[3].read(),
+                 limit[4][1],  motor[5].read(),  limit[6][1], motor[7].read() };
+  
+  int posi2[8]={ motor[0].read(),  limit[1][0],  motor[3].read(), limit[2][0],
+                 motor[4].read(),  limit[5][1],  motor[6].read(), limit[7][1] };
+  
+  move_arr(posi1, speed);
+  move_arr(posi2, speed);
+  init_position(speed);
+}
+
 void setup() {
   Serial.begin(9600);
   pinMode(echo, INPUT);
@@ -156,7 +168,7 @@ void loop() {
   switch(receive()){
     case 'w':
       walk(speed);
-      break;
+      break;                                
     case 's':
       swim(speed);
       break;
