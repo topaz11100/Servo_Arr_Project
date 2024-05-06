@@ -146,13 +146,6 @@ char receive() {
   }
 }
 
-void motor_test(int num){
-  motor[num].write(30);
-  delay(1000);
-  motor[num].write(130);
-  delay(5000);
-}
-
 void setup() {
   Serial.begin(9600);
   init_motor();
