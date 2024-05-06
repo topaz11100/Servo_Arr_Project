@@ -24,7 +24,12 @@ motor[0].read(),  motor[1].read(),  motor[2].read(),  motor[3].read(),  motor[4]
 #include <Servo.h>
 
 Servo motor[8];
+Servo turret;
 
+const int trig = 12;
+const int echo = 13;
+
+//마이크로초
 const int speed = 500;
 
 // limit[위치][모드] = {{앞쪽/서는방향한계, 뒤쪽/눕는방향한계}...}
@@ -36,6 +41,7 @@ void init_motor() {
   for (int i = 0; i < 8; i += 1) {
     motor[i].attach(i + 4);
   }
+  turret.attach(3);
   init_position(speed);
 }
 
@@ -43,6 +49,7 @@ void init_position(int speed){
   int init[8] = {(limit[0][0]+limit[0][1])/2,  (limit[1][0]+limit[1][1])/2,  (limit[2][0]+limit[2][1])/2,  (limit[3][0]+limit[3][1])/2,
                  (limit[4][0]+limit[4][1])/2,  (limit[5][0]+limit[5][1])/2,  (limit[6][0]+limit[6][1])/2,  (limit[7][0]+limit[7][1])/2 };
   move_arr(init, speed);
+  turret.write(90);
 }
 
 void read_motor() {
@@ -50,6 +57,7 @@ void read_motor() {
     String temp = String(i) + "th motor angle " + String(motor[i].read());
     Serial.println(temp);
   }
+  Serial.println("turret angle " + String(turret.read()));
 }
 
 void lay(int speed) {
@@ -138,16 +146,10 @@ void walk(int speed){
   init_position(speed);
 }
 
-char receive() {
-  if (Serial.available()) {
-    char temp = Serial.read();
-    Serial.println("Received char : " + String(temp));
-    return temp;
-  }
-}
-
 void setup() {
   Serial.begin(9600);
+  pinMode(echo, INPUT);
+  pinMode(trig, OUTPUT);
   init_motor();
 }
 void loop() {
@@ -166,3 +168,48 @@ void loop() {
       break;
   }
 }
+char receive() {
+  if (Serial.available()) {
+    char temp = Serial.read();
+    Serial.println("Received char : " + String(temp));
+    return temp;
+  }
+}
+
+float distance(){
+  float result;
+  long duration;
+  digitalWrite(trig, HIGH);         
+  delayMicroseconds(10);
+  digitalWrite(trig, LOW);
+  duration = pulseIn(echo, HIGH);
+  result = ((float)(340 * duration) / 1000) / 2;
+  Serial.println("distance : " + String(result));
+  return result;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
