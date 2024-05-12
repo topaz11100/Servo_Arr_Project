@@ -128,8 +128,8 @@ void squat(int speed){
 }
 
 void walk(int speed){
-  int posi1[8]={ limit[0][0],  motor[1].read(),  limit[2][0],  motor[3].read(),
-                 limit[4][1],  motor[5].read(),  limit[6][1], motor[7].read() };
+  int posi1[8]={ limit[0][0],  motor[1].read(),  limit[2][1],  motor[3].read(),
+                 limit[4][1],  motor[5].read(),  limit[6][1],  motor[7].read() };
   
   int posi2[8]={ motor[0].read(),  limit[1][0],  motor[3].read(), limit[2][0],
                  motor[4].read(),  limit[5][1],  motor[6].read(), limit[7][1] };
@@ -147,15 +147,43 @@ void walk(int speed){
 }
 
 void clock(int speed){
-  int posi1[8]={ limit[0][0],  motor[1].read(),  limit[2][0], motor[3].read(),
+  int posi1[8]={ limit[0][0],  motor[1].read(),  limit[2][1], motor[3].read(),
                  limit[4][1],  motor[5].read(),  limit[6][1], motor[7].read() };
   
-  int posi2[8]={ motor[0].read(),  limit[1][0],  motor[3].read(), limit[2][0],
+  int posi2[8]={ motor[0].read(),  limit[1][1],  motor[3].read(), limit[2][0],
                  motor[4].read(),  limit[5][1],  motor[6].read(), limit[7][1] };
   
   move_arr(posi1, speed);
+  move_angle(4, limit[4][0], speed);
+  move_angle(6, limit[6][0], speed);
+  stand();
   move_arr(posi2, speed);
+  move_angle(5, limit[5][0], speed);
+  move_angle(7, limit[7][0], speed);
+  stand();
   init_position(speed);
+}
+
+void anticlock(int speed){
+  int posi1[8]={ limit[0][1],  motor[1].read(),  limit[2][0], motor[3].read(),
+                 limit[4][1],  motor[5].read(),  limit[6][1], motor[7].read() };
+  
+  int posi2[8]={ motor[0].read(),  limit[1][0],  motor[3].read(), limit[2][1],
+                 motor[4].read(),  limit[5][1],  motor[6].read(), limit[7][1] };
+  
+  move_arr(posi1, speed);
+  move_angle(4, limit[4][0], speed);
+  move_angle(6, limit[6][0], speed);
+  stand();
+  move_arr(posi2, speed);
+  move_angle(5, limit[5][0], speed);
+  move_angle(7, limit[7][0], speed);
+  stand();
+  init_position(speed);
+}
+
+void turret(){
+
 }
 
 void setup() {
@@ -178,6 +206,15 @@ void loop() {
     case 'i':
       init_position(speed);
       break;
+    case 'b':
+      clock(speed);
+      break;
+    case 'n':
+      anticlock(speed);
+      break;
+    case 'd':
+      detect();
+      break;
   }
 }
 char receive() {
@@ -187,7 +224,30 @@ char receive() {
     return temp;
   }
 }
-
+void detect(){
+  int angle = 0;
+  float temp;
+  for(int i=90; i<=180; i+=1){
+    turret.write(i);
+    temp = distance();
+    if(result < temp){
+      result = temp;
+      angle = i;
+    }
+  }
+  for(int i=180; i>=0; i-=1){
+    turret.write(i);
+    temp = distance();
+    if(result < temp){
+      result = temp;
+      angle = i;
+    }
+  }
+  turret.write(angle);
+  Serial.println("distance : " + String(temp));
+  delay(100);
+  turret.write(90);
+}
 float distance(){
   float result;
   long duration;
@@ -196,7 +256,6 @@ float distance(){
   digitalWrite(trig, LOW);
   duration = pulseIn(echo, HIGH);
   result = ((float)(340 * duration) / 1000) / 2;
-  Serial.println("distance : " + String(result));
   return result;
 }
 
