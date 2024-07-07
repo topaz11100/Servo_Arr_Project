@@ -5,7 +5,7 @@ Servo servo;
 
 void setup(){
   //서보모터를 핀과 연결
-  servo.attach(5);
+  servo.attach(12);
 
   //통신 시작
   Serial.begin(9600);

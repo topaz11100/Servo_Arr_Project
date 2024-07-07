@@ -1,19 +1,45 @@
 #include <Servo.h>
 
+/* 
+
+   (모터주소, 연결핀)
+   __________ __________ _________________
+  |(4,8)__(0,4)              (3,7) _(7,11)|
+  |__|       |       ^        |        |__|
+             |       앞       |
+             |                |
+             |                |
+   _________ |                | __________
+  |(5,9)__(1,5)__            (2,6)__(6,10)|
+  |__|                                 |__|
+
+*/
+
 //다리 하나는 관절 두개로 이루어져있다
 //따라서 서보모터 두개로 다리 하나를 제어할 수 있다
 //무릎을 servo1, 발을 servo2라 해보자
-Servo servo1;
-Servo servo2;
+Servo m0;
+Servo m1;
+Servo m2;
+Servo m3;
+Servo m4;
+Servo m5;
+Servo m6;
+Servo m7;
 
 //속도 조절
 int speed = 1000;
 
 void setup(){
-  //예제1 무릎 부분을 4번, 발 부분을 8번에 연결하자
   
-  servo1.attach(4);
-  servo2.attach(8);
+  m0.attach(4);
+  m1.attach(5);
+  m2.attach(6);
+  m3.attach(7);
+  m4.attach(8);
+  m5.attach(9);
+  m6.attach(10);
+  m7.attach(11);
   
   Serial.begin(9600);
 }
@@ -51,22 +77,34 @@ void loop(){
 //예제2
 void read_motor(){
   
-  Serial.print("knee : ");
-  Serial.print(servo1.read());
-  Serial.print(" foot : ");
-  Serial.print(servo2.read());
-  
+  Serial.print("m0:");
+  Serial.print(m0.read());
+  Serial.print("  m4:");
+  Serial.print(m4.read());
+  Serial.print("  m1:");
+  Serial.print(m1.read());
+  Serial.print("  m5:");
+  Serial.print(m5.read());
+  Serial.print("  m2:");
+  Serial.print(m2.read());
+  Serial.print("  m6:");
+  Serial.print(m6.read());
+  Serial.print("  m3:");
+  Serial.print(m3.read());
+  Serial.print("  m7:");
+  Serial.println(m7.read());
+
 }
 //예제4
 void walk_one_leg(int speed){
   
-  servo1.write(0);
+  m0.write(0);
   delay(speed);
-  servo2.write(150);
+  m4.write(150);
   delay(speed);
-  servo1.write(150);
+  m0.write(150);
   delay(speed);
-  servo2.write(0);
+  m4.write(0);
   delay(speed);
 
 }

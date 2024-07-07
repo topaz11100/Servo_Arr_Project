@@ -17,7 +17,8 @@
 
 memo
 
-motor[0].read(),  motor[1].read(),  motor[2].read(),  motor[3].read(),  motor[4].read(),  motor[5].read(),  motor[6].read(),  motor[7].read()
+int pos[8] = {motor[0].read(), motor[1].read(), motor[2].read(), motor[3].read(), 
+              motor[4].read(), motor[5].read(), motor[6].read(), motor[7].read()}
 
 */
 
@@ -156,11 +157,11 @@ void clock(int speed){
   move_arr(posi1, speed);
   move_angle(4, limit[4][0], speed);
   move_angle(6, limit[6][0], speed);
-  stand();
+  stand(speed);
   move_arr(posi2, speed);
   move_angle(5, limit[5][0], speed);
   move_angle(7, limit[7][0], speed);
-  stand();
+  stand(speed);
   init_position(speed);
 }
 
@@ -174,15 +175,15 @@ void anticlock(int speed){
   move_arr(posi1, speed);
   move_angle(4, limit[4][0], speed);
   move_angle(6, limit[6][0], speed);
-  stand();
+  stand(speed);
   move_arr(posi2, speed);
   move_angle(5, limit[5][0], speed);
   move_angle(7, limit[7][0], speed);
-  stand();
+  stand(speed);
   init_position(speed);
 }
 
-void turret(){
+void turret1(){
 
 }
 
@@ -213,7 +214,7 @@ void loop() {
       anticlock(speed);
       break;
     case 'd':
-      detect();
+      //detect();
       break;
   }
 }
@@ -226,7 +227,7 @@ char receive() {
 }
 void detect(){
   int angle = 0;
-  float temp;
+  float temp, result;
   for(int i=90; i<=180; i+=1){
     turret.write(i);
     temp = distance();
