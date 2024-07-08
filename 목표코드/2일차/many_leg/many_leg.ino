@@ -122,23 +122,23 @@ void advanced_walk(){
 }
 void walk_1_3(){
   //발들어
-  servo1_f.write(30);
-  servo3_f.write(50);
+  servo1_f.write(90);
+  servo3_f.write(90);
   delay(speed);
 
   //앞으로
   servo1_k.write(0);
-  servo3_k.write(170);
+  servo3_k.write(150);
   delay(speed);
 
   //나머지 발 낮춤
-  servo2_f.write(130);
-  servo4_f.write(130);
+  servo2_f.write(80);
+  servo4_f.write(80);
   delay(speed);
 
   //발내려
-  servo1_f.write(130);
-  servo3_f.write(120);
+  servo1_f.write(180);
+  servo3_f.write(180);
   delay(speed);
 
   //잡아끌어
@@ -174,6 +174,7 @@ void walk_2_4(){
   delay(speed);
 
 }
+
 void stand(){
   //초기자세
   servo1_f.write(90);

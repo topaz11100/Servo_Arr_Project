@@ -46,23 +46,23 @@ void read_motor() {
   Serial.println("m7:" + String( m7.read() ));
 }
 void loop(){
-  read_motor();
-
   String received = Serial.readString();
   if (received.length() == 0) return;
 
   int stamp = received.indexOf(' ');
-  int temp1 = received.substring(0, stamp).toInt();
+  int motor = received.substring(0, stamp).toInt();
   int angle = received.substring(stamp + 1).toInt();
 
-  if      (temp1 == 0) m0.write(angle);
-  else if (temp1 == 1) m1.write(angle);
-  else if (temp1 == 2) m2.write(angle);
-  else if (temp1 == 3) m3.write(angle);
-  else if (temp1 == 4) m4.write(angle);
-  else if (temp1 == 5) m5.write(angle);
-  else if (temp1 == 6) m6.write(angle);
-  else if (temp1 == 7) m7.write(angle);
+  if      (motor == 0) m0.write(angle);
+  else if (motor == 1) m1.write(angle);
+  else if (motor == 2) m2.write(angle);
+  else if (motor == 3) m3.write(angle);
+  else if (motor == 4) m4.write(angle);
+  else if (motor == 5) m5.write(angle);
+  else if (motor == 6) m6.write(angle);
+  else if (motor == 7) m7.write(angle);
+
+  read_motor();
 }
 
 

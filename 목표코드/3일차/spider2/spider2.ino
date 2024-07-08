@@ -114,37 +114,39 @@ void squat(){
   stand();
 }
 void walk(){
-  int posi1[8]={ limit[0][0],  motor[1].read(),  limit[2][1],  motor[3].read(),
-                 limit[4][1],  motor[5].read(),  limit[6][1],  motor[7].read() };
-  
-  int posi2[8]={ motor[0].read(),  limit[1][1],  motor[3].read(), limit[3][0],
-                 motor[4].read(),  limit[5][1],  motor[6].read(), limit[7][1] };
-  
+  int posi1[8]={ limit[0][0],  motor[1].read(),  limit[2][0],  motor[3].read(),
+                 limit[4][1],  limit[5][1]-10,   limit[6][1],  limit[7][1]-10 };
   move_arr(posi1);
-  move_one(4, limit[4][0]);
-  move_one(6, limit[6][0]);
+
+  int posi2[8] = {(limit[0][0]+limit[0][1])/2,  motor[1].read(),  (limit[2][0]+limit[2][1])/2,  motor[3].read(),
+                  (limit[4][0]+limit[4][1])/2,  motor[5].read(),  (limit[6][0]+limit[6][1])/2,  motor[7].read() };
   move_arr(posi2);
-  move_one(5, limit[5][0]);
-  move_one(7, limit[7][0]);
-  init_position();
+
+  int posi3[8]={ motor[0].read(),  limit[1][0],  motor[2].read(), limit[3][0],
+                 limit[4][1]+10,   limit[5][1],  limit[6][1]+10,  limit[7][1] };
+  move_arr(posi3);
+
+  int posi4[8] = {motor[0].read(),  (limit[1][0]+limit[1][1])/2,  motor[2].read(),  (limit[3][0]+limit[3][1])/2,
+                  motor[4].read(),  (limit[5][0]+limit[5][1])/2,  motor[6].read(),  (limit[7][0]+limit[7][1])/2 };
+  move_arr(posi4);
 }
 // mode 0 : 시계 / mode 1 : 반시계
 void rotate(int mode){
-  int posi1[8]={ limit[0][mode],  motor[1].read(),  limit[2][1 - mode], motor[3].read(),
-                 limit[4][1],     motor[5].read(),  limit[6][1],        motor[7].read() };
-  
-  int posi2[8]={ motor[0].read(),  limit[1][1],  motor[2].read(), limit[3][0],
-                 motor[4].read(),  limit[5][1],  motor[6].read(), limit[7][1] };
-  
+  int posi1[8]={ limit[0][mode],  motor[1].read(),  limit[2][1-mode],  motor[3].read(),
+                 limit[4][1],  limit[5][1]-10,   limit[6][1],  limit[7][1]-10 };
   move_arr(posi1);
-  move_one(4, limit[4][0]);
-  move_one(6, limit[6][0]);
-  //stand();
+
+  int posi2[8] = {(limit[0][0]+limit[0][1])/2,  motor[1].read(),  (limit[2][0]+limit[2][1])/2,  motor[3].read(),
+                  (limit[4][0]+limit[4][1])/2,  motor[5].read(),  (limit[6][0]+limit[6][1])/2,  motor[7].read() };
   move_arr(posi2);
-  move_one(5, limit[5][0]);
-  move_one(7, limit[7][0]);
-  //stand();
-  //init_position();
+
+  int posi3[8]={ motor[0].read(),  limit[1][mode],  motor[2].read(), limit[3][1-mode],
+                 limit[4][1]+10,   limit[5][1],  limit[6][1]+10,  limit[7][1] };
+  move_arr(posi3);
+
+  int posi4[8] = {motor[0].read(),  (limit[1][0]+limit[1][1])/2,  motor[2].read(),  (limit[3][0]+limit[3][1])/2,
+                  motor[4].read(),  (limit[5][0]+limit[5][1])/2,  motor[6].read(),  (limit[7][0]+limit[7][1])/2 };
+  move_arr(posi4);
 }
 
 void hello(){
@@ -168,10 +170,10 @@ void swim(){
                     limit[4][1],limit[5][1],limit[6][1],limit[7][1]};
   move_arr(forward);
   stand();
-  delay(speed);
+  delay(speed/2);
   move_arr(back);
   lay();
-  delay(speed);
+  delay(speed)/2;
   init_position();
 }
 

@@ -3,7 +3,7 @@ void setup(){
 }
 
 void loop(){
-  Serial.println(hello("han"));
+  hello_name("han");
 }
 
 // 프로그래밍의 함수는 수학의 함수와 동일하다
@@ -25,12 +25,13 @@ char A(){
   return 'A';
 }
 
-String hello(String name){
-  return "hello, " + name;
+void hello_world(){
+  Serial.println("hello, world");
 }
 
-
-
+void hello_name(String name){
+  Serial.println(name);
+}
 
 
 

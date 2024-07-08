@@ -35,16 +35,12 @@ void setup(){
 
 void loop(){
   char received = receive();
-  if      (received == 'a'){
-    move(0);
-  }
-  else if (received == 'b'){
-    move(180);
-  }
+  if      (received == 'a') move(0);
+  else if (received == 'b') move(180);
 }
 char receive(){
   if(Serial.available()) return Serial.read();
-  return '?';
+  else return '?';
 }
 
 void move(int angle){
