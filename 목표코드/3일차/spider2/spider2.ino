@@ -173,7 +173,7 @@ void swim(){
   delay(speed/2);
   move_arr(back);
   lay();
-  delay(speed)/2;
+  delay(speed/2);
   init_position();
 }
 
