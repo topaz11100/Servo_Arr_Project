@@ -187,27 +187,40 @@ const int limit[8][2] =  { { 0, 160 }, { 10, 170 }, { 170, 10 }, { 170, 30 },
 //속도
 const int speed = 500;
 
+//조건을 검사하는 함수
+bool issame(int angle[]){
+  /*
+  // 두 배열이 같다는 배열의 순서에 맞는 원소가 모두 같은것이다
+  // 하나라도 같지 않으면 두 배열은 같지 않은 것이다
+  //8개 원소 순회
+  for(int i=0; i<8; i+=1){
+    //다른 원소가 있으면 거짓 반환하고 끝냄
+    if(motor[i].read() != arr[i]) return false;
+  }
+  //모든 원소가 다 같으면 참 반환
+  return true;
+  */
+}
+
 //아래와 같이 (자료형) (이름)[]을 입력에 넣으면 배열 매개변수로 인식된다
 void move_arr(int angle[], int speed){
   /*
-  확인배열 정의
-  bool check[8] = { false, false, false, false, false, false, false, false };
   모터가 목표 각도일때까지 반복할 것이므로 while문을 쓰자
   8개 다 목표각도이면 while을 빠져나올것이다
-  while(!(check[0] && check[1] && check[2] && check[3]
-        && check[4] && check[5] && check[6] && check[7])){
+  위에서 정의한 조건 검사함수를 사용한다
+  while( !( issame(angle) ) ){
     모터 8개 다 움직일 것이므로 반복문을 쓰자
     for (int i = 0; i < 8; i += 1) {
       모터의 현재각도에서 목표각도로 가야하므로 현재 각도를 읽어야한다
       int temp = motor[i].read();
       1도씩 움직이면서 목표각도로 향하려면?
       현재각도가 목표각도보다 크면 1빼고 작으면 1더하면된다
-      같으면 check해주자
       if      (temp > arr[i]) motor[i].write(temp - 1);
       else if (temp < arr[i]) motor[i].write(temp + 1);
-      else    check[i] = true;
-      //마이크로초단위로 지연할 수 있어 좀더 부드럽게 될것이다.
-      delayMicroseconds(speed);
+      }
+    //마이크로초단위로 지연할 수 있어 좀더 부드럽게 될것이다.
+    delayMicroseconds(speed);
+    }
   */
 }
 void lay(int speed) {

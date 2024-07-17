@@ -30,6 +30,7 @@ const int speed = 500;
 // limit[위치][모드] = {{앞쪽/서는방향한계, 뒤쪽/눕는방향한계}...}
 const int limit[8][2] = { {0, 155}, {30, 180}, {150, 0}, {180, 30},
 	                        {180 , 90}, {0, 90}, {180, 90}, {0, 90} };
+// 발의경우 뒷 원소 밖의 범위는 올라오는 각도이다
 
 void setup() {
   Serial.begin(9600);
@@ -91,6 +92,9 @@ void loop() {
   else if (received == 'c') rotate(0);
   else if (received == 'z') rotate(1);
   else if (received == 'h') hello();
+  else if (received == 'm') swim();
+  else if (received == 't') tank_walk();
+  else if (received == 'v') avoid_walk();
 }
 char receive() {
   if (Serial.available()) return Serial.read();
@@ -112,37 +116,39 @@ void squat(){
   stand();
 }
 void walk(){
-  int posi1[8]={ limit[0][0],  motor[1].read(),  limit[2][1],  motor[3].read(),
-                 limit[4][1],  motor[5].read(),  limit[6][1],  motor[7].read() };
-  
-  int posi2[8]={ motor[0].read(),  limit[1][1],  motor[3].read(), limit[3][0],
-                 motor[4].read(),  limit[5][1],  motor[6].read(), limit[7][1] };
-  
+  int posi1[8]={ limit[0][0],  motor[1].read(),  limit[2][0],  motor[3].read(),
+                 limit[4][1],  limit[5][1]-10,   limit[6][1],  limit[7][1]-10 };
   move_arr(posi1);
-  move_one(4, limit[4][0]);
-  move_one(6, limit[6][0]);
+
+  int posi2[8] = {(limit[0][0]+limit[0][1])/2,  motor[1].read(),  (limit[2][0]+limit[2][1])/2,  motor[3].read(),
+                  (limit[4][0]+limit[4][1])/2,  motor[5].read(),  (limit[6][0]+limit[6][1])/2,  motor[7].read() };
   move_arr(posi2);
-  move_one(5, limit[5][0]);
-  move_one(7, limit[7][0]);
-  init_position();
+
+  int posi3[8]={ motor[0].read(),  limit[1][0],  motor[2].read(), limit[3][0],
+                 limit[4][1]+10,   limit[5][1],  limit[6][1]+10,  limit[7][1] };
+  move_arr(posi3);
+
+  int posi4[8] = {motor[0].read(),  (limit[1][0]+limit[1][1])/2,  motor[2].read(),  (limit[3][0]+limit[3][1])/2,
+                  motor[4].read(),  (limit[5][0]+limit[5][1])/2,  motor[6].read(),  (limit[7][0]+limit[7][1])/2 };
+  move_arr(posi4);
 }
 // mode 0 : 시계 / mode 1 : 반시계
 void rotate(int mode){
-  int posi1[8]={ limit[0][mode],  motor[1].read(),  limit[2][1 - mode], motor[3].read(),
-                 limit[4][1],     motor[5].read(),  limit[6][1],        motor[7].read() };
-  
-  int posi2[8]={ motor[0].read(),  limit[1][1],  motor[2].read(), limit[3][0],
-                 motor[4].read(),  limit[5][1],  motor[6].read(), limit[7][1] };
-  
+  int posi1[8]={ limit[0][mode],  motor[1].read(),  limit[2][1-mode],  motor[3].read(),
+                 limit[4][1],  limit[5][1]-10,   limit[6][1],  limit[7][1]-10 };
   move_arr(posi1);
-  move_one(4, limit[4][0]);
-  move_one(6, limit[6][0]);
-  //stand();
+
+  int posi2[8] = {(limit[0][0]+limit[0][1])/2,  motor[1].read(),  (limit[2][0]+limit[2][1])/2,  motor[3].read(),
+                  (limit[4][0]+limit[4][1])/2,  motor[5].read(),  (limit[6][0]+limit[6][1])/2,  motor[7].read() };
   move_arr(posi2);
-  move_one(5, limit[5][0]);
-  move_one(7, limit[7][0]);
-  //stand();
-  //init_position();
+
+  int posi3[8]={ motor[0].read(),  limit[1][mode],  motor[2].read(), limit[3][1-mode],
+                 limit[4][1]+10,   limit[5][1],  limit[6][1]+10,  limit[7][1] };
+  move_arr(posi3);
+
+  int posi4[8] = {motor[0].read(),  (limit[1][0]+limit[1][1])/2,  motor[2].read(),  (limit[3][0]+limit[3][1])/2,
+                  motor[4].read(),  (limit[5][0]+limit[5][1])/2,  motor[6].read(),  (limit[7][0]+limit[7][1])/2 };
+  move_arr(posi4);
 }
 
 void hello(){
@@ -159,6 +165,19 @@ void hello(){
   init_position();
 }
 
+void swim(){
+  int forward[8] = {limit[0][0],limit[1][0],limit[2][0],limit[3][0],
+                    limit[4][0],limit[5][0],limit[6][0],limit[7][0]};
+  int back[8]    = {limit[0][1],limit[1][1],limit[2][1],limit[3][1],
+                    limit[4][1],limit[5][1],limit[6][1],limit[7][1]};
+  move_arr(forward);
+  stand();
+  delay(speed/2);
+  move_arr(back);
+  lay();
+  delay(speed/2);
+  init_position();
+}
 //mm 반환
 float distance(){
   float result;
@@ -171,8 +190,42 @@ float distance(){
   return result;
 }
 
+void tank_walk(float s){
+  while (true){
+    walk();
+    if (distance() < s){ lay(); return; }
+  }
+}
 
+float find_far(){
+  float result, temp;
+  for(int i=90; i<180; i+=1){
+    turret.write(i); delay(1);
+    temp = distance();
+    if(temp > result) result = temp;
+    delay(1);
+  }
+  for(int i=180; i>0; i-=1){
+    turret.write(i); delay(1);
+    temp = distance();
+    if(temp > result) result = temp;
+    delay(1);
+  }
+  for(int i=0; i<90; i+=1){
+    turret.write(i); delay(1);
+    temp = distance();
+    if(temp > result) result = temp;
+    delay(1);
+  }
+  return result;
+}
 
+void avoid_walk(){
+  while (true){
+    walk()
+    if (distance() < s){  }
+  }
+}
 
 
 

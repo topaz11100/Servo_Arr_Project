@@ -93,6 +93,8 @@ void loop() {
   else if (received == 'z') rotate(1);
   else if (received == 'h') hello();
   else if (received == 'm') swim();
+  else if (received == 't') tank_walk();
+  else if (received == 'v') avoid_walk();
 }
 char receive() {
   if (Serial.available()) return Serial.read();
@@ -176,7 +178,6 @@ void swim(){
   delay(speed/2);
   init_position();
 }
-
 //mm 반환
 float distance(){
   float result;
@@ -189,8 +190,42 @@ float distance(){
   return result;
 }
 
+void tank_walk(float s){
+  while (true){
+    walk();
+    if (distance() < s){ lay(); return; }
+  }
+}
 
+float find_far(){
+  float result, temp;
+  for(int i=90; i<180; i+=1){
+    turret.write(i); delay(1);
+    temp = distance();
+    if(temp > result) result = temp;
+    delay(1);
+  }
+  for(int i=180; i>0; i-=1){
+    turret.write(i); delay(1);
+    temp = distance();
+    if(temp > result) result = temp;
+    delay(1);
+  }
+  for(int i=0; i<90; i+=1){
+    turret.write(i); delay(1);
+    temp = distance();
+    if(temp > result) result = temp;
+    delay(1);
+  }
+  return result;
+}
 
+void avoid_walk(){
+  while (true){
+    walk()
+    if (distance() < s){  }
+  }
+}
 
 
 
