@@ -93,8 +93,8 @@ void loop() {
   else if (received == 'z') rotate(1);
   else if (received == 'h') hello();
   else if (received == 'm') swim();
-  else if (received == 't') tank_walk();
-  else if (received == 'v') avoid_walk();
+  else if (received == 't') tank_walk(70);
+  else if (received == 'v') avoid_walk(70);
 }
 char receive() {
   if (Serial.available()) return Serial.read();
@@ -191,39 +191,37 @@ float distance(){
 }
 
 void tank_walk(float s){
-  while (true){
-    walk();
-    if (distance() < s){ lay(); return; }
-  }
+  walk();
+  if (distance() < s){ lay(); return; }
 }
 
+float find_far_assistant(int angle, float& result){
+  turret.write(angle); delay(1);
+  float temp = distance();
+  if(temp > result) result = temp;
+  delay(1);
+}
 float find_far(){
-  float result, temp;
-  for(int i=90; i<180; i+=1){
-    turret.write(i); delay(1);
-    temp = distance();
-    if(temp > result) result = temp;
-    delay(1);
-  }
-  for(int i=180; i>0; i-=1){
-    turret.write(i); delay(1);
-    temp = distance();
-    if(temp > result) result = temp;
-    delay(1);
-  }
-  for(int i=0; i<90; i+=1){
-    turret.write(i); delay(1);
-    temp = distance();
-    if(temp > result) result = temp;
-    delay(1);
-  }
+  float result = 0;
+  for(int i=90 ; i<180; i+=1) find_far_assistant(i, result);
+  for(int i=180; i>0  ; i-=1) find_far_assistant(i, result);
+  for(int i=0  ; i<90 ; i+=1) find_far_assistant(i, result);
   return result;
 }
 
-void avoid_walk(){
+void avoid_walk(float s){
+  walk();
+  if( distance() < s ) return;
+  float temp = find_far();
+  int n = 1;
   while (true){
-    walk()
-    if (distance() < s){  }
+    for(int i=0; i<n; i+=1) rotate( n%2 );
+    n += 1;
+    float d = distance();
+    if( (temp-5 < d) && (d < temp+5) ) {
+      walk();
+      return;
+    }
   }
 }
 
