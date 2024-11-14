@@ -2,7 +2,6 @@
 #include "Adafruit_VL53L0X.h"
 
 Adafruit_VL53L0X lox = Adafruit_VL53L0X();
-VL53L0X_RangingMeasurementData_t measure;
 
 Servo_vector spider{8};
 const int spider_pin[8] = {4,5,6,7,8,9,10,11};
@@ -21,7 +20,7 @@ void setup()
 {
   Serial.begin(115200);
   init_spider();
-  //lox.begin();
+  lox.begin();
 }
 void init_spider()
 {
@@ -38,7 +37,7 @@ void init_position()
 }
 void loop()
 {
-  /*
+  
   char received = receive_char('?');
   if      (received == 'w') walk();
   else if (received == 's') squat();
@@ -52,10 +51,10 @@ void loop()
   else if (received == '1') install();
   else if (received == '2') turret_rotation_test();
   else if (received == '3') init_init();
-  */
-  //Serial.print("Distance (mm): ");
-  //Serial.println(distance());
-
+  
+  Serial.print("Distance (mm): ");
+  Serial.println(distance());
+  /*
   init_init();
   delay(500);
   walk();
@@ -89,6 +88,10 @@ void loop()
   swim();
   swim();
   delay(500);
+  */
+
+  //Serial.print("Distance (mm): ");
+  //Serial.println(distance());
 }
 
 void init_init()
@@ -195,15 +198,10 @@ void swim()
 
 int distance()
 {
+  VL53L0X_RangingMeasurementData_t measure;
   lox.rangingTest(&measure);
-  if (measure.RangeStatus != 4)
-  {  
-    return measure.RangeMilliMeter;
-  }
-  else
-  {
-    return 0;
-  }
+  return measure.RangeMilliMeter;
+  //예외는 센서 최대거리이상일때인데 그냥 최대거리반환하게하면된다
 }
 
 void tank_walk(float s)
@@ -253,6 +251,7 @@ float find_far_assistant(long& result, long& max, long now_position)
     result = now_position;
   }
 }
+
 long avoid_max_turret_position()
 {
   long result;
