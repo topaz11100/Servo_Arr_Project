@@ -1,7 +1,7 @@
 //실행 방법 ㅣ 시리얼 모니터에 각각의 모드에 해당하는 입력 넣기
 
 //라이브러리
-#include <Parts_base.h>
+#include "Servo.vector.h"
 //초음파
 Ultrasonic hc06;
 
