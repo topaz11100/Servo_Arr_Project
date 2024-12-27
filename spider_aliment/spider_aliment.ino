@@ -1,4 +1,4 @@
-#include "Servo_vector.h"
+#include "Servo_Vector.h"
 #include "IO_helper.h"
 
 const int motor_count = 8;
@@ -20,6 +20,7 @@ void setup()
 void loop()
 {
   String input = receive_String('\n');
+  if (input.equals("")) return;
   p.strip(input);
   p.fillintarr(angle);
   spider.move_arr(angle, speed);

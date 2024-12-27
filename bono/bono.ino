@@ -1,4 +1,4 @@
-#include "Servo_vector.h"
+#include "Servo_Vector.h"
 #include "IO_helper.h"
 #include "Adafruit_VL53L0X.h"
 
@@ -24,11 +24,11 @@ int distance()
 }
 
 //마이크로초
-const int speed = 500;
+const int speed = 2000;
 
 // limit[위치][모드] = {{앞쪽/서는방향한계, 뒤쪽/눕는방향한계}...}
 const int limit[8][2] = { {0, 155}, {30, 180}, {150, 0}, {180, 30},
-                            {180 , 90}, {0, 90}, {180, 90}, {0, 90} };
+                            {170 , 90}, {10, 90}, {170, 90}, {10, 90} };
 
 void setup()
 {
@@ -55,10 +55,53 @@ void loop()
     else if (received == 'h') hello();
     else if (received == 'm') swim();
     else if (received == 't') tank_walk(300);
-    else if (received == 'v') avoid_walk(200, speed);
+    else if (received == 'v') avoid_walk(300, speed);
     else if (received == '1') install();
-    else if (received == '2') turret_rotation_test(speed);
+    else if (received == '2') turret_rotation_test(10 * speed);
     else if (received == '3') init_init();
+    else if (received == '0') Serial.println(distance());
+    
+    
+    init_init();
+    init_position();
+    
+    squat();
+    squat();
+
+    swim();
+
+    squat();
+    squat();
+
+    walk();
+    walk();
+
+    delay(100);
+
+    init_position();
+
+    rotate(0);
+    rotate(0);
+
+    rotate(1);
+    rotate(1);
+
+    init_position();
+
+    delay(100);
+
+    turret_rotation_test(10 * speed);
+
+    tank_walk(300);
+
+    rotate(1);
+    rotate(1);
+
+    avoid_walk(300, speed);
+
+    delay(100);
+    
+
 }
 
 void init_position()
@@ -74,7 +117,7 @@ void init_init()
     int temp[8] = { 0, 180, 0, 180,
                    90, 90, 90, 90 };
     spider.move_arr(temp, speed);
-    delay(5000);
+    delay(1000);
     init_position();
 }
 
@@ -144,14 +187,14 @@ void rotate(int mode)
 void hello()
 {
     init_position();
-    spider.move_one(4, 30, speed);
-    spider.move_one(0, limit[0][0], speed);
-    delay(speed / 2);
+    spider.move_one(4, 30, speed/4);
+    spider.move_one(0, limit[0][0], speed/4);
+    delay(speed / 6);
     for (int i = 0; i < 2; i += 1) {
-        spider.move_one(0, 45, speed);
-        delay(speed / 2);
-        spider.move_one(0, 0, speed);
-        delay(speed / 2);
+        spider.move_one(0, 45, speed/4);
+        delay(speed / 6);
+        spider.move_one(0, 0, speed/4);
+        delay(speed / 6);
     }
     init_position();
 }
@@ -209,7 +252,7 @@ void turret_rotation_test(int speed)
 long find_max_distance(int speed)
 {
     long angle = 0, max = 0, temp = 0;
-    for (int i = turret.read(); i > 0; i -= 1)
+    for (int i = turret.read(); i > 0; i -= 10)
     {
         turret.write(i);
         temp = distance();
@@ -218,9 +261,9 @@ long find_max_distance(int speed)
             angle = turret.read();
             max = temp;
         }
-        delayMicroseconds(speed);
+        //delayMicroseconds(speed);
     }
-    for (int i = 0; i < 180; i += 1)
+    for (int i = 0; i < 180; i += 10)
     {
         turret.write(i);
         temp = distance();
@@ -229,12 +272,12 @@ long find_max_distance(int speed)
             angle = turret.read();
             max = temp;
         }
-        delayMicroseconds(speed);
+        //delayMicroseconds(speed);
     }
     for (int i = 180; i > 90; i -= 1)
     {
         turret.write(i);
-        delayMicroseconds(speed);
+        //delayMicroseconds(speed);
     }
     return max * 1000 + angle;
 }
