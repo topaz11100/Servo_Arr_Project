@@ -214,8 +214,6 @@ void swim()
     init_position();
 }
 
-
-
 void tank_walk(int thre)
 {
     while (true)
@@ -274,11 +272,12 @@ long find_max_distance(int speed)
         }
         //delayMicroseconds(speed);
     }
-    for (int i = 180; i > 90; i -= 1)
+    for (int i = 180; i > 90; i -= 10)
     {
         turret.write(i);
         //delayMicroseconds(speed);
     }
+    turret.write(90);
     return max * 1000 + angle;
 }
 
@@ -290,7 +289,7 @@ void avoid_walk(int thre, int speed)
         {
             long result = find_max_distance(speed);
             int dist = result / 1000;
-            int angle = 90 < (result % 100);
+            int angle = 90 < (result % 1000);
             while (abs(dist - distance()) > 50)
             {
                 rotate(angle);
