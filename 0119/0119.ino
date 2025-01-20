@@ -1,27 +1,24 @@
 #include "Servo_Vector.h"
 #include "IO_helper.h"
-#include "Adafruit_VL53L0X.h"
-#include "MemoryFree.h"
+#include "Wire.h"
+#include "VL53L0X.h"
+long randNumber;
 
 Servo_vector spider{ 8 };
 const int spider_pin[8] = { 4, 5, 6, 7, 8, 9, 10, 11 };
 
 Servo turret;
 const int turret_pin = 3;
-Adafruit_VL53L0X sensor = Adafruit_VL53L0X();
-VL53L0X_RangingMeasurementData_t sensor_data;
+VL53L0X sensor;
+
+
 int distance()
 {
-    sensor.rangingTest(&sensor_data, false);
-    if (sensor_data.RangeStatus != 4)
-    {  // phase failures have incorrect data
-        return sensor_data.RangeMilliMeter;
-    }
-    else
-    {
-        return 8191;
-    }
-    //예외는 센서 최대거리이상일때인데 그냥 최대거리반환하게하면된다
+    while(sensor.timeoutOccurred()) {}
+    delay(10);
+    int result = sensor.readRangeContinuousMillimeters();
+    delay(10);
+    return result;
 }
 
 //마이크로초
@@ -33,9 +30,23 @@ const int limit[8][2] = { {0, 155}, {30, 180}, {150, 0}, {180, 30},
 
 void setup()
 {
-    Serial.begin(115200);
+    //Serial.begin(9600);
     init_spider();
-    sensor.begin();
+    Wire.begin();
+
+    sensor.setTimeout(500);
+    if (!sensor.init())
+    {
+        //Serial.println("Failed to detect and initialize sensor!");
+        while (1) {}
+    }
+
+    // Start continuous back-to-back mode (take readings as
+    // fast as possible).  To use continuous timed mode
+    // instead, provide a desired inter-measurement period in
+    // ms (e.g. sensor.startContinuous(100)).
+    sensor.startContinuous();
+    randomSeed(analogRead(0));
 }
 
 void init_spider()
@@ -52,6 +63,7 @@ void init_spider()
 
 void loop()
 {
+  /*
     char received = receive_char('?');
     if (received == 'w') walk();
     else if (received == 's') squat();
@@ -82,7 +94,7 @@ void loop()
 
     
     pos_pos();
-    while(true) {avoid_walk(500, speed);}
+    while(true) { avoid_walk(500, speed); }
     
 }
 
@@ -230,7 +242,6 @@ void tank_walk(int thre)
     while (true)
     {
         int d = distance();
-        Serial.println(d);
         if (d <= thre)
         {
             hello();
@@ -259,51 +270,54 @@ void turret_rotation_test(int speed)
     }
 }
 
-
+// 문제부분
 long find_max_distance(int speed)
 {
     int angle = 0, max = 0, temp = 0;
-    for (int i = turret.read(); i > 0; i -= 10)
+    for (int i = 90; i > 0; i -= 10)
     {
         temp = distance();
         if (temp > max)
         {
-            angle = turret.read();
+            angle = i;
             max = temp;
         }
         turret.write(i);
-        delayMicroseconds(speed);
+        delay(10);
     }
+    
     for (int i = 0; i < 180; i += 10)
     {
         temp = distance();
         if (temp > max)
         {
-            angle = turret.read();
+            angle = i;
             max = temp;
         }
         turret.write(i);
-        delayMicroseconds(speed);
+        delay(10);
     }
     for (int i = 180; i > 90; i -= 10)
     {
         turret.write(i);
-        delayMicroseconds(speed);
+        delay(10);
     }
     turret.write(90);
-    delayMicroseconds(speed);
+    delay(10);
     long result = (long)max * 1000L + (long)angle;
+    
     return result;
 }
+
 
 void avoid_walk(int thre, int speed)
 {
     while (true)
     {
         int d = distance();
-        Serial.println(d);
         if (d <= thre)
         {
+          // 문제부분
             long result = find_max_distance(speed);
             //long result = 8191L * 1000L;
             int dist = result / 1000L;
@@ -312,15 +326,21 @@ void avoid_walk(int thre, int speed)
             while (abs(dist - d) > 100)
             {
                 d = distance();
-                Serial.print("dist = ");
-                Serial.print(dist);
-                Serial.print("distance = ");
-                Serial.println(d);
                 rotate(angle);
             }
             
             return;
+            /*
+            randNumber = random(2);
+            turret_rotation_test(speed * 2);
+            while (distance() > 1000 )
+            { 
+              rotate(randNumber);
+            }
+            return;
+            */
         }
+        
         walk();
     }
 }
