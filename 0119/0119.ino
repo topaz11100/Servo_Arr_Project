@@ -8,15 +8,13 @@ Servo_vector spider{ 8 };
 const int spider_pin[8] = { 4, 5, 6, 7, 8, 9, 10, 11 };
 
 Servo turret;
-const int turret_pin = 3;
+const int turret_pin = 12;
 VL53L0X sensor;
-
 
 int distance()
 {
-    while(sensor.timeoutOccurred()) {}
     delay(10);
-    int result = sensor.readRangeContinuousMillimeters();
+    int result = sensor.readRangeSingleMillimeters();
     delay(10);
     return result;
 }
@@ -41,11 +39,7 @@ void setup()
         while (1) {}
     }
 
-    // Start continuous back-to-back mode (take readings as
-    // fast as possible).  To use continuous timed mode
-    // instead, provide a desired inter-measurement period in
-    // ms (e.g. sensor.startContinuous(100)).
-    sensor.startContinuous();
+    
     randomSeed(analogRead(0));
 }
 
@@ -95,7 +89,6 @@ void loop()
     
     pos_pos();
     while(true) { avoid_walk(500, speed); }
-    
 }
 
 void pos_pos()
@@ -330,17 +323,7 @@ void avoid_walk(int thre, int speed)
             }
             
             return;
-            /*
-            randNumber = random(2);
-            turret_rotation_test(speed * 2);
-            while (distance() > 1000 )
-            { 
-              rotate(randNumber);
-            }
-            return;
-            */
         }
-        
         walk();
     }
 }
