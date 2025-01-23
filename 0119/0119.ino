@@ -263,42 +263,35 @@ void turret_rotation_test(int speed)
     }
 }
 
+void decide_max(int from, int to, int* max, int* angle)
+{
+    int temp;
+    int t = 2 * (from < to) - 1;
+    for (int i = from; i != to; i += t)
+    {
+        temp = distance();
+        if (temp > *max)
+        {
+            *angle = i;
+            *max = temp;
+        }
+        turret.write(i);
+        delay(10);
+    }
+}
+
 // 문제부분
 long find_max_distance(int speed)
 {
-    int angle = 0, max = 0, temp = 0;
-    for (int i = 90; i > 0; i -= 10)
-    {
-        temp = distance();
-        if (temp > max)
-        {
-            angle = i;
-            max = temp;
-        }
-        turret.write(i);
-        delay(10);
-    }
+    int max = 0, angle = 0;
     
-    for (int i = 0; i < 180; i += 10)
-    {
-        temp = distance();
-        if (temp > max)
-        {
-            angle = i;
-            max = temp;
-        }
-        turret.write(i);
-        delay(10);
-    }
-    for (int i = 180; i > 90; i -= 10)
-    {
-        turret.write(i);
-        delay(10);
-    }
+    decide_max(90, 180, &max, &angle);
+    decide_max(180, 0, &max, &angle);
+    
     turret.write(90);
     delay(10);
-    long result = (long)max * 1000L + (long)angle;
     
+    long result = (long)max * 1000L + (long)angle;
     return result;
 }
 
