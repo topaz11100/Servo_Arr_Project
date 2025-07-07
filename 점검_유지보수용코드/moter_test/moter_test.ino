@@ -1,4 +1,4 @@
-#include "Servo_Arr.h"
+#include "Servo_Arr.hpp"
 
 #define MOTOR 8
 #define speed 500

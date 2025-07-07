@@ -1,6 +1,6 @@
-#include "Servo_Arr.h"
-#include "IO_helper.h"
-#include "base_part.h"
+#include "Servo_Arr.hpp"
+#include "IO_helper.hpp"
+#include "base_part.hpp"
 
 #define motor 8
 #define trig 10
@@ -10,7 +10,7 @@
 Servo_Arr robot(motor);
 Ultrasonic dist;
 
-const int attach_pin[motor] = {4,5,6,7,8,9,10,11};
+constexpr int attach_pin[motor] = {4,5,6,7,8,9,10,11};
 
 void setup()
 {

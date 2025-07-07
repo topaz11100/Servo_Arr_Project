@@ -107,7 +107,7 @@ void loop()
 void init_position()
 {
     int init[8] = { (limit[0][0] + limit[0][1]) / 2,  (limit[1][0] + limit[1][1]) / 2,  (limit[2][0] + limit[2][1]) / 2,  (limit[3][0] + limit[3][1]) / 2,
-                   (limit[4][0] + limit[4][1]) / 2,  (limit[5][0] + limit[5][1]) / 2,  (limit[6][0] + limit[6][1]) / 2,  (limit[7][0] + limit[7][1]) / 2 };
+                    (limit[4][0] + limit[4][1]) / 2,  (limit[5][0] + limit[5][1]) / 2,  (limit[6][0] + limit[6][1]) / 2,  (limit[7][0] + limit[7][1]) / 2 };
     spider.move_arr(init, speed);
     turret.write(90);
 }
@@ -149,38 +149,38 @@ void squat()
 void walk()
 {
     int posi1[8] = { limit[0][0],  spider[1].read(),  limit[2][0],  spider[3].read(),
-                   limit[4][1],  limit[5][1] - 20,   limit[6][1],  limit[7][1] - 20 };
+                     limit[4][1],  limit[5][1] - 20,   limit[6][1],  limit[7][1] - 20 };
     spider.move_arr(posi1, speed);
 
     int posi2[8] = { (limit[0][0] + limit[0][1]) / 2,  spider[1].read(),  (limit[2][0] + limit[2][1]) / 2,  spider[3].read(),
-                    limit[4][0],  spider[5].read(),  limit[6][0],  spider[7].read() };
+                      limit[4][0],  spider[5].read(),  limit[6][0],  spider[7].read() };
     spider.move_arr(posi2, speed);
 
     int posi3[8] = { spider[0].read(),  limit[1][0],  spider[2].read(), limit[3][0],
-                   limit[4][1] + 20,   limit[5][1],  limit[6][1] + 20,  limit[7][1] };
+                     limit[4][1] + 20,   limit[5][1],  limit[6][1] + 20,  limit[7][1] };
     spider.move_arr(posi3, speed);
 
     int posi4[8] = { spider[0].read(),  (limit[1][0] + limit[1][1]) / 2,  spider[2].read(),  (limit[3][0] + limit[3][1]) / 2,
-                    spider[4].read(),  limit[5][0],  spider[6].read(),  limit[7][0] };
+                     spider[4].read(),  limit[5][0],  spider[6].read(),  limit[7][0] };
     spider.move_arr(posi4, speed);
 }
 // mode 0 : 시계 / mode 1 : 반시계
 void rotate(int mode)
 {
     int posi1[8] = { limit[0][mode],  spider[1].read(),  limit[2][1 - mode],  spider[3].read(),
-                   limit[4][1],  limit[5][1] - 20,   limit[6][1],  limit[7][1] - 20 };
+                     limit[4][1],  limit[5][1] - 20,   limit[6][1],  limit[7][1] - 20 };
     spider.move_arr(posi1, speed);
 
     int posi2[8] = { (limit[0][0] + limit[0][1]) / 2,  spider[1].read(),  (limit[2][0] + limit[2][1]) / 2,  spider[3].read(),
-                    limit[4][0],  spider[5].read(),  limit[6][0],  spider[7].read() };
+                      limit[4][0],  spider[5].read(),  limit[6][0],  spider[7].read() };
     spider.move_arr(posi2, speed);
 
     int posi3[8] = { spider[0].read(),  limit[1][mode],  spider[2].read(), limit[3][1 - mode],
-                   limit[4][1] + 20,   limit[5][1],  limit[6][1] + 20,  limit[7][1] };
+                     limit[4][1] + 20,   limit[5][1],  limit[6][1] + 20,  limit[7][1] };
     spider.move_arr(posi3, speed);
 
     int posi4[8] = { spider[0].read(),  (limit[1][0] + limit[1][1]) / 2,  spider[2].read(),  (limit[3][0] + limit[3][1]) / 2,
-                    spider[4].read(),  limit[5][0],  spider[6].read(),  limit[7][0] };
+                     spider[4].read(),  limit[5][0],  spider[6].read(),  limit[7][0] };
     spider.move_arr(posi4, speed);
 }
 
@@ -203,7 +203,7 @@ void swim()
 {
     int forward[8] = { limit[0][0], limit[1][0], limit[2][0], limit[3][0],
                        limit[4][0], limit[5][0], limit[6][0], limit[7][0] };
-    int back[8] = { limit[0][1], limit[1][1], limit[2][1], limit[3][1],
+    int back[8] =    { limit[0][1], limit[1][1], limit[2][1], limit[3][1],
                        limit[4][1], limit[5][1], limit[6][1], limit[7][1] };
     spider.move_arr(forward, speed);
     stand();

@@ -1,5 +1,5 @@
-#include "Servo_Arr.h"
-#include "IO_helper.h"
+#include "Servo_Arr.hpp"
+#include "IO_helper.hpp"
 
 #define MOTOR 8
 #define speed 500
@@ -7,7 +7,8 @@
 Servo_Arr spider{MOTOR};
 const int spider_pin[MOTOR] = {4,5,6,7,8,9,10,11};
 
-Protocol p{',', MOTOR};
+// (문자열)(구분자) * size
+Protocol p{MOTOR, '/'};
 
 int angle[MOTOR] = {90,90,90,90,90,90,90,90};
 
@@ -23,9 +24,8 @@ void loop()
 {
   String input = receive_String('\n');
   if (input.equals("")) return;
-  p.strip(input);
-  p.fillintarr(angle);
-
+  if (!p.receive(input)) return;
+  p.store_int_arr(angle);
   spider.move_arr(angle, speed);
 }
 
