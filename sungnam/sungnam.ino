@@ -2,15 +2,14 @@
 #include "IO_helper.hpp"
 #include "base_part.hpp"
 
-#define motor 8
-#define trig 10
-#define echo 11
-#define speed 200
+const int motor = 8;
+const int trig  = 10;
+const int echo  = 11;
+const int speed = 200;
+const int attach_pin[motor] = {4,5,6,7,8,9,10,11};
 
 Servo_Arr robot(motor);
 Ultrasonic dist;
-
-constexpr int attach_pin[motor] = {4,5,6,7,8,9,10,11};
 
 void setup()
 {
