@@ -60,48 +60,6 @@ void loop()
     else if (received == '2') turret_rotation_test(10 * speed);
     else if (received == '3') init_init();
     else if (received == '0') Serial.println(distance());
-    
-    
-    init_init();
-    init_position();
-    
-    squat();
-    squat();
-
-    swim();
-
-    squat();
-    squat();
-
-    walk();
-    walk();
-
-    delay(100);
-
-    init_position();
-
-    rotate(0);
-    rotate(0);
-
-    rotate(1);
-    rotate(1);
-
-    init_position();
-
-    delay(100);
-
-    turret_rotation_test(10 * speed);
-
-    tank_walk(300);
-
-    rotate(1);
-    rotate(1);
-
-    avoid_walk(300, speed);
-
-    delay(100);
-    
-
 }
 
 void init_position()

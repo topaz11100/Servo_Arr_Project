@@ -1,24 +1,24 @@
 #include "Servo_Arr.hpp"
 
-#define MOTOR 8
-#define speed 500
+const int = MOTOR 8;
+const int = SPEED 500;
+const int PIN[MOTOR] = {4,5,6,7,8,9,10,11};
 
-Servo_Arr spider{MOTOR};
-const int spider_pin[MOTOR] = {4,5,6,7,8,9,10,11};
+Servo_Arr robot{MOTOR};
 
 const int a0[8] = {0,0,0,0,0,0,0,0};
 const int a180[8] = {180,180,180,180,180,180,180,180};
   
 void setup()
 {
-  spider.attach(spider_pin);
+  robot.attach(PIN);
 }
 
 void loop()
 {
-  spider.move_arr(a0, speed);
+  robot.move_arr(a0, SPEED);
   delay(100);
-  spider.move_arr(a180, speed);
+  robot.move_arr(a180, SPEED);
   delay(100);
 }
 
