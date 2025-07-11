@@ -1,8 +1,8 @@
-#include "Servo_Vector.h"
-#include "IO_helper.h"
+#include "Servo_Arr.hpp"
+#include "IO_helper.hpp"
 #include "Adafruit_VL53L0X.h"
 
-Servo_vector spider{ 8 };
+Servo_Arr spider{ 8 };
 const int spider_pin[8] = { 4, 5, 6, 7, 8, 9, 10, 11 };
 
 Servo turret;
