@@ -111,7 +111,7 @@ void walk_until_cossision(int thre)
 
 void loop()
 {
-    char r = receive_char('?');
+    char r = Rx::recv_char('?');
     switch(r)
     {
         case 'w':

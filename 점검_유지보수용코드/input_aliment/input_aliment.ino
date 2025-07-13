@@ -21,7 +21,7 @@ void setup()
 void loop()
 {
     //형식 문자열 받아 파싱 후 각도에 저장
-    String input = receive_String('\n');
+    String input = Rx::recv_str('\n');
     if (!p.receive(input)) return;
     p.store_int_arr(angle);
 
